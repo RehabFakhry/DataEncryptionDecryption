@@ -1,9 +1,7 @@
 package com.example.dataencryptiondecryption
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -15,7 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.dataencryptiondecryption.ext.decrypt
 import com.example.dataencryptiondecryption.ext.encrypt
@@ -23,8 +21,8 @@ import com.example.dataencryptiondecryption.ext.encrypt
 @Composable
 fun MainScreen() {
 
-    var inputText by remember { mutableStateOf(TextFieldValue()) }
-    var outputText by remember { mutableStateOf(TextFieldValue()) }
+    var inputText by remember { mutableStateOf("") }
+    var outputText by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -36,32 +34,28 @@ fun MainScreen() {
             value = inputText,
             onValueChange = { inputText = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Enter text to encrypt") }
+            label = { Text("Enter text to encrypt", color = Color.Gray) }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Button(
+            modifier = Modifier.padding(top = 16.dp),
             onClick = {
-                val encryptedText = inputText.text.encrypt()
-                outputText = TextFieldValue(encryptedText)
+                val encryptedText = inputText.encrypt()
+                outputText = encryptedText
             }
         ) {
             Text("Encrypt")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         Button(
+            modifier = Modifier.padding(vertical = 16.dp),
             onClick = {
-                val decryptedText = outputText.text.decrypt()
-                outputText = TextFieldValue(decryptedText ?: "")
+                val decryptedText = outputText.decrypt()
+                outputText = decryptedText ?: ""
             }
         ) {
             Text("Decrypt")
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = outputText,
